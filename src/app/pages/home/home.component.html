@@ -1,5 +1,59 @@
-<div class="row mt-5">
-  @if (products?.length) {
+<div class="row mt-3">
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="row g-3">
+    <div class="col-3">
+      <label for="productName" class="form-label">Product Name</label>
+      <input
+        formControlName="name"
+        id="productName"
+        class="form-control"
+        placeholder="Enter product name"
+        type="text"
+      />
+    </div>
+
+    <div class="col-3">
+      <label for="productCategory" class="form-label">Category</label>
+      <select
+        formControlName="category"
+        id="productCategory"
+        class="form-select"
+      >
+        <option value="">All Categories</option>
+        <option *ngFor="let category of productCategories" [value]="category.key">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-3">
+      <label for="minPrice" class="form-label">Min Price</label>
+      <input
+        formControlName="minPrice"
+        id="minPrice"
+        class="form-control"
+        placeholder="Enter minimum price"
+        type="number"
+      />
+    </div>
+
+    <div class="col-3">
+      <label for="maxPrice" class="form-label">Max Price</label>
+      <input
+        formControlName="maxPrice"
+        id="maxPrice"
+        class="form-control"
+        placeholder="Enter maximum price"
+        type="number"
+      />
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+  </form>
+
+
+  @if (products.length) {
     <div class="col-4 ps-5 pe-5 pt-5" *ngFor="let product of products">
       <div class="card">
         <img class="card-img-top" [src]="product.image" [alt]="product.name">
