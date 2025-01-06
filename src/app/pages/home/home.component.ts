@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product';
 import { CommonModule } from '@angular/common';
+import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, StarRatingComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

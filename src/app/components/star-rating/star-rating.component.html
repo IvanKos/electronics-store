@@ -1,0 +1,5 @@
+<div class="star-rating">
+  <span *ngFor="let star of [].constructor(maxRating); let i = index">
+    <i [class]="i < rating ? 'bi bi-star-fill' : 'bi bi-star'"></i>
+  </span>
+</div>

@@ -1,17 +1,17 @@
 <div class="row mt-5">
   @if (products?.length) {
-
-    <div class="col-4 ps-5 pe-5" *ngFor="let product of products">
+    <div class="col-4 ps-5 pe-5 pt-5" *ngFor="let product of products">
       <div class="card">
         <img class="card-img-top" [src]="product.image" [alt]="product.name">
         <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">{{ product.name }}</h5>
+          <div class="d-flex align-items-center justify-content-between">
+            <app-star-rating [rating]="product.rating"></app-star-rating>
+            <button class="btn btn-primary">Add to cart</button>
+          </div>
+
         </div>
       </div>
     </div>
   }
-
 </div>
