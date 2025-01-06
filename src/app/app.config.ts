@@ -6,8 +6,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
-import { productReducer } from './store/product.reducer';
+import { productReducer } from './store/products/product.reducer';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductEffects } from './store/products/product.effects';
+import { cartReducer } from './store/cart/cart.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,9 +18,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(ReactiveFormsModule),
     provideStore({
-      products: productReducer
+      products: productReducer,
+      cart: cartReducer
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects()
+    provideEffects(ProductEffects)
   ]
 };

@@ -1,4 +1,4 @@
-import { Product } from '../interfaces/product';
+import { Product } from '../../interfaces/product';
 import { createReducer, on } from '@ngrx/store';
 import { loadProductsFailure, loadProductsSuccess } from './product.actions';
 

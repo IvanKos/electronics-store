@@ -4,9 +4,10 @@ import { Product } from '../../interfaces/product';
 import { CommonModule } from '@angular/common';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { select, Store } from '@ngrx/store';
-import { loadProducts } from '../../store/product.actions';
-import { selectAllProducts, selectProductError } from '../../store/product.selectors';
+import { loadProducts } from '../../store/products/product.actions';
+import { selectAllProducts, selectProductError } from '../../store/products/product.selectors';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { addToCart } from '../../store/cart/cart.actions';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  productService: ProductService = inject(ProductService);
   store: Store = inject(Store);
   formBuilder: FormBuilder = inject(FormBuilder);
 
@@ -30,18 +30,13 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.productService.getProducts().subscribe((products: Product[]) => {
-    //   this.products = products;
-    //
-    //   console.log('products', this.products);
-    // })
-
     this.initFilterForm();
 
     this.store.dispatch(loadProducts());
 
     this.store.pipe(select(selectAllProducts)).subscribe((products) => {
       this.productsOriginal = products;
+      this.products = products;
       console.log('this.productsOriginal', this.productsOriginal);
     });
 
@@ -71,6 +66,9 @@ export class HomeComponent implements OnInit {
         const matchesMaxPrice = maxPrice ? product.price <= maxPrice : true;
         return matchesName && matchesCategory && matchesMinPrice && matchesMaxPrice;
       });
+  }
 
+  addToCart(product: Product) {
+    this.store.dispatch(addToCart({product}));
   }
 }
