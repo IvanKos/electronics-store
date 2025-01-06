@@ -7,3 +7,9 @@ export interface Product {
   image: string;
   description: string;
 }
+
+export interface ProductsFilter {
+  name?: string;
+  price?: {min: number; max: number};
+  category?: string;
+}

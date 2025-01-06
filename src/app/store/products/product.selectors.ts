@@ -8,6 +8,11 @@ export const selectAllProducts = createSelector(
   (state: ProductState) => state.products
 );
 
+export const selectFilteredProducts = createSelector(
+  selectProductState,
+  (state: ProductState) => state.filteredProducts
+);
+
 export const selectProductError = createSelector(
   selectProductState,
   (state: ProductState) => state.error

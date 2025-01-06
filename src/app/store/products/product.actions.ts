@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Product } from '../../interfaces/product';
+import { Product, ProductsFilter } from '../../interfaces/product';
 
 export const loadProducts = createAction('[Product] Load Products');
 
@@ -11,4 +11,9 @@ export const loadProductsSuccess = createAction(
 export const loadProductsFailure = createAction(
   '[Product] Load Products Failure',
   props<{ error: string }>()
+);
+
+export const filterProducts = createAction(
+  '[Product] Filter Products',
+  props<{ filter: ProductsFilter }>()
 );

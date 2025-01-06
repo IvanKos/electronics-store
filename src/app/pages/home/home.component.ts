@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product';
 import { CommonModule } from '@angular/common';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { select, Store } from '@ngrx/store';
-import { loadProducts } from '../../store/products/product.actions';
-import { selectAllProducts, selectProductError } from '../../store/products/product.selectors';
+import { filterProducts, loadProducts } from '../../store/products/product.actions';
+import { selectAllProducts, selectFilteredProducts } from '../../store/products/product.selectors';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { addToCart } from '../../store/cart/cart.actions';
+import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
 
 @Component({
   selector: 'app-home',
@@ -19,13 +19,14 @@ export class HomeComponent implements OnInit {
   store: Store = inject(Store);
   formBuilder: FormBuilder = inject(FormBuilder);
 
-  productsOriginal: Product[] = [];
+  // productsOriginal: Product[] = [];
   products: Product[] = [];
   filterForm!: FormGroup;
+  selectedProductsMap: Record<number, Product> = {};
 
   productCategories = [
-    {name: "Phones", key: "phones"},
-    {name: "TVs", key: "tv"}
+    { name: "Phones", key: "phones" },
+    { name: "TVs", key: "tv" }
   ]
 
 
@@ -34,16 +35,21 @@ export class HomeComponent implements OnInit {
 
     this.store.dispatch(loadProducts());
 
-    this.store.pipe(select(selectAllProducts)).subscribe((products) => {
-      this.productsOriginal = products;
+    // this.store.pipe(select(selectAllProducts)).subscribe((products) => {
+    //   // this.productsOriginal = products;
+    //   this.products = products;
+    //   console.log('selectAllProducts', products);
+    // });
+
+    this.store.pipe(select(selectFilteredProducts)).subscribe((products) => {
       this.products = products;
-      console.log('this.productsOriginal', this.productsOriginal);
+
+      console.log('selectFilteredProducts', products);
     });
 
-    this.store.pipe(select(selectProductError)).subscribe((error) => {
-      if (error) {
-        console.error('Error loading products:', error);
-      }
+    this.store.pipe(select(selectAddedProductsMap)).subscribe((selectedProductsMap) => {
+      this.selectedProductsMap = selectedProductsMap;
+      console.log('selectedProductsMap', this.selectedProductsMap);
     });
   }
 
@@ -59,16 +65,19 @@ export class HomeComponent implements OnInit {
   applyFilters() {
     const { name, category, minPrice, maxPrice } = this.filterForm.value;
 
-      this.products = this.productsOriginal.filter(product => {
-        const matchesName = name ? product.name.toLowerCase().includes(name.toLowerCase()) : true;
-        const matchesCategory = category ? product.category === category : true;
-        const matchesMinPrice = minPrice ? product.price >= minPrice : true;
-        const matchesMaxPrice = maxPrice ? product.price <= maxPrice : true;
-        return matchesName && matchesCategory && matchesMinPrice && matchesMaxPrice;
-      });
+
+    console.log('applyFilters');
+
+    this.store.dispatch(filterProducts({
+      filter: {
+        name,
+        category,
+        price: {min: minPrice, max: maxPrice}
+      }
+    }))
   }
 
   addToCart(product: Product) {
-    this.store.dispatch(addToCart({product}));
+    this.store.dispatch(addToCart({ product }));
   }
 }

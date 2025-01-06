@@ -4,21 +4,21 @@ import { addToCart, removeFromCart } from './cart.actions';
 import * as utils from './cart.utils';
 
 export interface CartState {
-  products: Product[];
+  productsMap: Record<number, Product> ;
 }
 
 export const initialState: CartState = {
-  products: []
+  productsMap: {}
 };
 
 export const cartReducer = createReducer(
   initialState,
   on(addToCart, (state, { product }) => ({
     ...state,
-    products: [...state.products, product],
+    productsMap: {...state.productsMap, [product.id]: product},
   })),
   on(removeFromCart, (state, { productId }) => ({
     ...state,
-    products: utils.removeProduct(state.products, productId),
+    productsMap: utils.removeProduct(state.productsMap, productId)
   }))
 );

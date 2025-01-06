@@ -10,6 +10,7 @@ import { productReducer } from './store/products/product.reducer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductEffects } from './store/products/product.effects';
 import { cartReducer } from './store/cart/cart.reducer';
+import { CartEffects } from './store/cart/cart.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,6 @@ export const appConfig: ApplicationConfig = {
       cart: cartReducer
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(ProductEffects)
+    provideEffects(ProductEffects, CartEffects)
   ]
 };

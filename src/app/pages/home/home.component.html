@@ -59,11 +59,13 @@
         <img class="card-img-top" [src]="product.image" [alt]="product.name">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
+          <div>{{product.price | currency}}</div>
           <div class="d-flex align-items-center justify-content-between">
             <app-star-rating [rating]="product.rating"></app-star-rating>
-            <button class="btn btn-primary" (click)="addToCart(product)">Add to cart</button>
+            <button class="btn btn-primary" (click)="addToCart(product)" [disabled]="!!selectedProductsMap[product.id]">
+              {{ !!selectedProductsMap[product.id] ? 'Added' : 'Add to cart' }}
+            </button>
           </div>
-
         </div>
       </div>
     </div>
