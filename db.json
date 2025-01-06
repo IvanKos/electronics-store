@@ -1,0 +1,31 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Iphone",
+      "price": 20,
+      "category": "Phone",
+      "rating": 2,
+      "image": "/assets/img/products/img1.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 30,
+      "category": "TV",
+      "rating": 2,
+      "image": "/assets/img/products/img2.jpeg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "price": 40,
+      "category": "Appliances",
+      "rating": 5,
+      "image": "/assets/img/products/img3.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    }
+  ]
+}
