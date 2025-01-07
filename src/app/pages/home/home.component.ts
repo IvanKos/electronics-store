@@ -10,6 +10,7 @@ import { addToCart } from '../../store/cart/cart.actions';
 import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ProductModalComponent } from '../../components/product-modal/product-modal.component';
+import { ProductCategories } from '../../enums/product-categories';
 
 @Component({
   selector: 'app-home',
@@ -26,12 +27,13 @@ export class HomeComponent implements OnInit {
   filterForm!: FormGroup;
   bsModalRef?: BsModalRef;
   selectedProductsMap: Record<number, Product> = {};
+  currentPage: number = 1;
+  itemsPerPage: number = 9;
 
-  productCategories = [
-    { name: "Phones", key: "phones" },
-    { name: "TVs", key: "tv" }
-  ]
-
+  productCategories = Object.entries(ProductCategories).map(([key, value]) => ({
+    key,
+    name: value
+  }));
 
   ngOnInit() {
     this.initFilterForm();
@@ -39,8 +41,6 @@ export class HomeComponent implements OnInit {
 
     this.store.pipe(select(selectFilteredProducts)).subscribe((products) => {
       this.products = products;
-
-      console.log('selectFilteredProducts', products);
     });
 
     this.store.pipe(select(selectAddedProductsMap)).subscribe((selectedProductsMap) => {
@@ -77,7 +77,21 @@ export class HomeComponent implements OnInit {
   openProductModal(product: Product) {
     this.bsModalRef = this.modalService.show(ProductModalComponent, {
       initialState: { product },
-      class: 'modal-lg'
+      class: 'modal-md'
     });
+  }
+
+  getPaginatedProducts() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.products.slice(start, end);
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
+  }
+
+  get totalPages() {
+    return Math.ceil(this.products.length / this.itemsPerPage);
   }
 }

@@ -9,6 +9,11 @@ export const selectAddedProducts = createSelector(
   (state: CartState): Product[] => Object.values(state.productsMap)
 );
 
+export const selectAddedProductsCount = createSelector(
+  selectCartState,
+  (state: CartState): number => Object.values(state.productsMap).length
+);
+
 export const selectAddedProductsMap = createSelector(
   selectCartState,
   (state: CartState): Record<number, Product> => state.productsMap

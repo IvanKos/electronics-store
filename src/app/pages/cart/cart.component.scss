@@ -1,0 +1,36 @@
+.card {
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+.rating-box {
+  background: #454545;
+
+  i {
+    color: gold;
+  }
+}
+
+.product-image {
+  height: 250px;
+  padding: 10px 0;
+
+  img {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}

@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Iphone 12",
-      "price": 20,
+      "price": 200,
       "category": "Phone",
       "rating": 2,
       "image": "/assets/img/products/img1.jpg",
@@ -12,7 +12,7 @@
     {
       "id": 2,
       "name": "Iphone 11",
-      "price": 20,
+      "price": 300,
       "category": "Phone",
       "rating": 4,
       "image": "/assets/img/products/img1.jpg",
@@ -21,7 +21,7 @@
     {
       "id": 3,
       "name": "Iphone 10",
-      "price": 20,
+      "price": 190,
       "category": "Phone",
       "rating": 2,
       "image": "/assets/img/products/img1.jpg",
@@ -29,19 +29,64 @@
     },
     {
       "id": 4,
-      "name": "Product 2",
-      "price": 30,
+      "name": "TV 1",
+      "price": 5000,
+      "category": "TV",
+      "rating": 5,
+      "image": "/assets/img/products/img2.jpeg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 5,
+      "name": "TV 2",
+      "price": 1000,
+      "category": "TV",
+      "rating": 4,
+      "image": "/assets/img/products/img2.jpeg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 6,
+      "name": "TV 3",
+      "price": 3000,
       "category": "TV",
       "rating": 2,
       "image": "/assets/img/products/img2.jpeg",
       "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
     },
     {
-      "id": 5,
-      "name": "Product 3",
-      "price": 40,
-      "category": "Appliances",
+      "id": 7,
+      "name": "TV 4",
+      "price": 3500,
+      "category": "TV",
       "rating": 5,
+      "image": "/assets/img/products/img2.jpeg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 8,
+      "name": "Refrigerator 1",
+      "price": 40,
+      "category": "Appliance",
+      "rating": 5,
+      "image": "/assets/img/products/img3.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 9,
+      "name": "Refrigerator 2",
+      "price": 8000,
+      "category": "Appliance",
+      "rating": 4,
+      "image": "/assets/img/products/img3.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 10,
+      "name": "Refrigerator 3",
+      "price": 1200,
+      "category": "Appliance",
+      "rating": 3,
       "image": "/assets/img/products/img3.jpg",
       "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
     }
