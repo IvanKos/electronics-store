@@ -52,6 +52,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  private getPaginatedProducts() {
+    const start = (this.currentPage() - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.products().slice(start, end);
+  }
+
   addToCart(event: Event, product: Product) {
     event.stopPropagation();
     this.store.dispatch(addToCart({ product }));
@@ -62,12 +68,6 @@ export class HomeComponent implements OnInit {
       initialState: { product },
       class: 'modal-md'
     });
-  }
-
-  private getPaginatedProducts() {
-    const start = (this.currentPage() - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    return this.products().slice(start, end);
   }
 
   changePage(page: number) {

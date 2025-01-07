@@ -89,6 +89,24 @@
       "rating": 3,
       "image": "/assets/img/products/img3.jpg",
       "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 11,
+      "name": "Game 1",
+      "price": 1200,
+      "category": "VideoGame",
+      "rating": 5,
+      "image": "/assets/img/products/img4.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
+    },
+    {
+      "id": 12,
+      "name": "Game 2",
+      "price": 4500,
+      "category": "VideoGame",
+      "rating": 4,
+      "image": "/assets/img/products/img4.jpg",
+      "description": "Some quick example text to build on the card title and make up the bulk of the card's content."
     }
   ]
 }

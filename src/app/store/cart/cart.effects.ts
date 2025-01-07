@@ -13,7 +13,7 @@ export class CartEffects {
       this.actions$.pipe(
         ofType(addToCart),
         tap(({ product }) => {
-            this.toast.success(`${product.name} added to cart!`);
+            this.toast.success(`${product.name} added to cart!`, '', {positionClass: 'toast-bottom-right' });
           }
         )
       ),
