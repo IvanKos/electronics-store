@@ -1,79 +1,34 @@
-<div class="row mt-3">
-  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="row g-3">
-    <div class="col-3">
-      <label for="productName" class="form-label">Product Name</label>
-      <input
-        formControlName="name"
-        id="productName"
-        class="form-control"
-        placeholder="Enter product name"
-        type="text"
-      />
-    </div>
-
-    <div class="col-3">
-      <label for="productCategory" class="form-label">Category</label>
-      <select
-        formControlName="category"
-        id="productCategory"
-        class="form-select"
-      >
-        <option value="">All Categories</option>
-        <option *ngFor="let category of productCategories" [value]="category.key">
-          {{ category.name }}
-        </option>
-      </select>
-    </div>
-
-    <div class="col-3">
-      <label for="minPrice" class="form-label">Min Price</label>
-      <input
-        formControlName="minPrice"
-        id="minPrice"
-        class="form-control"
-        placeholder="Enter minimum price"
-        type="number"
-      />
-    </div>
-
-    <div class="col-3">
-      <label for="maxPrice" class="form-label">Max Price</label>
-      <input
-        formControlName="maxPrice"
-        id="maxPrice"
-        class="form-control"
-        placeholder="Enter maximum price"
-        type="number"
-      />
-    </div>
-
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
-  </form>
-
-
-  @if (products.length) {
-    <div class="col-4 ps-5 pe-5 pt-5" *ngFor="let product of getPaginatedProducts()">
-      <div class="card" (click)="openProductModal(product)">
-        <img class="card-img-top" [src]="product.image" [alt]="product.name">
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <div>{{ product.price | currency }}</div>
-          <div class="d-flex align-items-center justify-content-between">
-            <app-star-rating [rating]="product.rating"></app-star-rating>
-            <button class="btn btn-primary" (click)="addToCart($event, product)" [disabled]="!!selectedProductsMap[product.id]">
-              {{ !!selectedProductsMap[product.id] ? 'Added' : 'Add to cart' }}
-            </button>
+<app-filter-sidebar></app-filter-sidebar>
+<section class="content">
+  <div class="row">
+    @if (products().length) {
+      @for (product of paginatedProducts(); track product.id) {
+        <div class="col-4 ps-5 pe-5 pt-5">
+          <div class="card" (click)="openProductModal(product)">
+            <img class="card-img-top" [src]="product.image" [alt]="product.name">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <div>{{ product.price | currency }}</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <app-star-rating [rating]="product.rating"></app-star-rating>
+                <button class="btn btn-primary" (click)="addToCart($event, product)"
+                        [disabled]="!!selectedProductsMap()[product.id]">
+                  {{ !!selectedProductsMap()[product.id] ? 'Added' : 'Add to cart' }}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  }
+      }
+    }
 
-  <div class="d-flex justify-content-center mt-4 mb-4">
-    <button class="btn btn-secondary" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
-    <span class="mx-3">{{ currentPage }} / {{ totalPages }}</span>
-    <button class="btn btn-secondary" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    <div class="d-flex justify-content-center mt-4 mb-4">
+      <button class="btn btn-secondary" (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1">Previous
+      </button>
+      <span class="mx-3">{{ currentPage() }} / {{ totalPages() }}</span>
+      <button class="btn btn-secondary" (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
+        Next
+      </button>
+    </div>
   </div>
-</div>
+</section>

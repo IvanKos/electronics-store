@@ -1,0 +1,56 @@
+<div class="sidebar d-flex flex-column bg-light">
+  <h5 class="mb-0">Filters</h5>
+  <hr>
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="row g-3">
+    <div class="col-12">
+      <label for="productName" class="form-label">Product Name</label>
+      <input
+        formControlName="name"
+        id="productName"
+        class="form-control"
+        placeholder="Enter product name"
+        type="text"
+      />
+    </div>
+
+    <div class="col-12">
+      <label for="productCategory" class="form-label">Category</label>
+      <select
+        formControlName="category"
+        id="productCategory"
+        class="form-select"
+      >
+        <option value="">All Categories</option>
+        <option *ngFor="let category of productCategories" [value]="category.key">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <label for="minPrice" class="form-label">Min Price</label>
+      <input
+        formControlName="minPrice"
+        id="minPrice"
+        class="form-control"
+        placeholder="Enter minimum price"
+        type="number"
+      />
+    </div>
+
+    <div class="col-12">
+      <label for="maxPrice" class="form-label">Max Price</label>
+      <input
+        formControlName="maxPrice"
+        id="maxPrice"
+        class="form-control"
+        placeholder="Enter maximum price"
+        type="number"
+      />
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+  </form>
+</div>

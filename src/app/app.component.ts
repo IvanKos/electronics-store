@@ -9,5 +9,4 @@ import { HeaderComponent } from './components/header/header.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'electronics-store';
 }

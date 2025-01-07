@@ -1,72 +1,55 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Product } from '../../interfaces/product';
-import { CommonModule } from '@angular/common';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
-import { select, Store } from '@ngrx/store';
-import { filterProducts, loadProducts } from '../../store/products/product.actions';
+import { Store } from '@ngrx/store';
+import { loadProducts } from '../../store/products/product.actions';
 import { selectFilteredProducts } from '../../store/products/product.selectors';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { addToCart } from '../../store/cart/cart.actions';
 import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ProductModalComponent } from '../../components/product-modal/product-modal.component';
-import { ProductCategories } from '../../enums/product-categories';
+import { FilterSidebarComponent } from '../../components/filter-sidebar/filter-sidebar.component';
+import { CurrencyPipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, StarRatingComponent, ReactiveFormsModule],
+  imports: [StarRatingComponent, ReactiveFormsModule, FilterSidebarComponent, CurrencyPipe],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  store: Store = inject(Store);
-  formBuilder: FormBuilder = inject(FormBuilder);
-  modalService: BsModalService = inject(BsModalService);
+  private store: Store = inject(Store);
+  private modalService: BsModalService = inject(BsModalService);
 
-  products: Product[] = [];
-  filterForm!: FormGroup;
-  bsModalRef?: BsModalRef;
-  selectedProductsMap: Record<number, Product> = {};
-  currentPage: number = 1;
-  itemsPerPage: number = 9;
-
-  productCategories = Object.entries(ProductCategories).map(([key, value]) => ({
-    key,
-    name: value
-  }));
+  private selectFilteredProducts$ = this.store.select(selectFilteredProducts).pipe(takeUntilDestroyed());
+  private selectAddedProductsMap$ = this.store.select(selectAddedProductsMap).pipe(takeUntilDestroyed());
+  private readonly itemsPerPage: number = 9;
+  protected products = signal<Product[]>([]);
+  protected selectedProductsMap = signal<Record<number, Product>>({});
+  protected currentPage = signal<number>(1);
+  protected paginatedProducts = computed<Product[]>(() => this.getPaginatedProducts());
+  protected totalPages = computed<number>(() => Math.ceil(this.products().length / this.itemsPerPage));
 
   ngOnInit() {
-    this.initFilterForm();
     this.store.dispatch(loadProducts());
 
-    this.store.pipe(select(selectFilteredProducts)).subscribe((products) => {
-      this.products = products;
-    });
+    this.setProducts();
+    this.setSelectedProductsMap();
+  }
 
-    this.store.pipe(select(selectAddedProductsMap)).subscribe((selectedProductsMap) => {
-      this.selectedProductsMap = selectedProductsMap;
+  private setProducts() {
+    this.selectFilteredProducts$.subscribe((products) => {
+      this.products.set(products);
     });
   }
 
-  initFilterForm() {
-    this.filterForm = this.formBuilder.group({
-      name: [''],
-      category: [''],
-      minPrice: [null],
-      maxPrice: [null]
+  private setSelectedProductsMap() {
+    this.selectAddedProductsMap$.subscribe((selectedProductsMap) => {
+      this.selectedProductsMap.set(selectedProductsMap);
     });
-  }
-
-  applyFilters() {
-    const { name, category, minPrice, maxPrice } = this.filterForm.value;
-
-    this.store.dispatch(filterProducts({
-      filter: {
-        name,
-        category,
-        price: {min: minPrice, max: maxPrice}
-      }
-    }))
   }
 
   addToCart(event: Event, product: Product) {
@@ -75,23 +58,19 @@ export class HomeComponent implements OnInit {
   }
 
   openProductModal(product: Product) {
-    this.bsModalRef = this.modalService.show(ProductModalComponent, {
+    this.modalService.show(ProductModalComponent, {
       initialState: { product },
       class: 'modal-md'
     });
   }
 
-  getPaginatedProducts() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
+  private getPaginatedProducts() {
+    const start = (this.currentPage() - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    return this.products.slice(start, end);
+    return this.products().slice(start, end);
   }
 
   changePage(page: number) {
-    this.currentPage = page;
-  }
-
-  get totalPages() {
-    return Math.ceil(this.products.length / this.itemsPerPage);
+    this.currentPage.set(page);
   }
 }

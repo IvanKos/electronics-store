@@ -1,11 +1,12 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Product } from '../../interfaces/product';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { CommonModule } from '@angular/common';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { addToCart } from '../../store/cart/cart.actions';
 import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-modal',
@@ -14,20 +15,15 @@ import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
     StarRatingComponent
   ],
   templateUrl: './product-modal.component.html',
-  styleUrl: './product-modal.component.scss'
+  styleUrl: './product-modal.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductModalComponent implements OnInit {
-  store: Store = inject(Store);
-  bsModalRef: BsModalRef = inject(BsModalRef);
+export class ProductModalComponent {
+  private store: Store = inject(Store);
+  private bsModalRef: BsModalRef = inject(BsModalRef);
 
   @Input() product!: Product;
-  selectedProductsMap: Record<number, Product> = {};
-
-  ngOnInit(): void {
-    this.store.pipe(select(selectAddedProductsMap)).subscribe((selectedProductsMap) => {
-      this.selectedProductsMap = selectedProductsMap;
-    });
-  }
+  selectedProductsMap$: Observable<Record<number, Product>> = this.store.select(selectAddedProductsMap);
 
   close() {
     this.bsModalRef.hide();
