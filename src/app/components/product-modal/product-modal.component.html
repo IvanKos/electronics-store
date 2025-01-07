@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ product.name }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+<div class="modal-body">
+  <img class="img-fluid mb-3" [src]="product.image" [alt]="product.name" />
+  <p><strong>Price:</strong> {{ product.price | currency }}</p>
+  <p><strong>Rating:</strong> <app-star-rating [rating]="product.rating"></app-star-rating></p>
+  <p><strong>Description:</strong> {{ product.description }}</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+  <button class="btn btn-primary" (click)="addToCart()" [disabled]="!!selectedProductsMap[product.id]">
+    {{ !!selectedProductsMap[product.id] ? 'Added' : 'Add to cart' }}
+  </button>
+</div>

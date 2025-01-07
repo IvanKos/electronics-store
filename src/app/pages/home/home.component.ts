@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { select, Store } from '@ngrx/store';
 import { filterProducts, loadProducts } from '../../store/products/product.actions';
-import { selectAllProducts, selectFilteredProducts } from '../../store/products/product.selectors';
+import { selectFilteredProducts } from '../../store/products/product.selectors';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { addToCart } from '../../store/cart/cart.actions';
 import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ProductModalComponent } from '../../components/product-modal/product-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +20,11 @@ import { selectAddedProductsMap } from '../../store/cart/cart.selectors';
 export class HomeComponent implements OnInit {
   store: Store = inject(Store);
   formBuilder: FormBuilder = inject(FormBuilder);
+  modalService: BsModalService = inject(BsModalService);
 
-  // productsOriginal: Product[] = [];
   products: Product[] = [];
   filterForm!: FormGroup;
+  bsModalRef?: BsModalRef;
   selectedProductsMap: Record<number, Product> = {};
 
   productCategories = [
@@ -32,14 +35,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.initFilterForm();
-
     this.store.dispatch(loadProducts());
-
-    // this.store.pipe(select(selectAllProducts)).subscribe((products) => {
-    //   // this.productsOriginal = products;
-    //   this.products = products;
-    //   console.log('selectAllProducts', products);
-    // });
 
     this.store.pipe(select(selectFilteredProducts)).subscribe((products) => {
       this.products = products;
@@ -49,7 +45,6 @@ export class HomeComponent implements OnInit {
 
     this.store.pipe(select(selectAddedProductsMap)).subscribe((selectedProductsMap) => {
       this.selectedProductsMap = selectedProductsMap;
-      console.log('selectedProductsMap', this.selectedProductsMap);
     });
   }
 
@@ -65,9 +60,6 @@ export class HomeComponent implements OnInit {
   applyFilters() {
     const { name, category, minPrice, maxPrice } = this.filterForm.value;
 
-
-    console.log('applyFilters');
-
     this.store.dispatch(filterProducts({
       filter: {
         name,
@@ -77,7 +69,15 @@ export class HomeComponent implements OnInit {
     }))
   }
 
-  addToCart(product: Product) {
+  addToCart(event: Event, product: Product) {
+    event.stopPropagation();
     this.store.dispatch(addToCart({ product }));
+  }
+
+  openProductModal(product: Product) {
+    this.bsModalRef = this.modalService.show(ProductModalComponent, {
+      initialState: { product },
+      class: 'modal-lg'
+    });
   }
 }
