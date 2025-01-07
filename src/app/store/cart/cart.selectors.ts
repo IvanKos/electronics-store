@@ -14,6 +14,11 @@ export const selectAddedProductsCount = createSelector(
   (state: CartState): number => Object.values(state.productsMap).length
 );
 
+export const selectAddedProductsTotal = createSelector(
+  selectCartState,
+  (state: CartState): number => Object.values(state.productsMap).reduce((total, product) => total + product.price, 0)
+);
+
 export const selectAddedProductsMap = createSelector(
   selectCartState,
   (state: CartState): Record<number, Product> => state.productsMap

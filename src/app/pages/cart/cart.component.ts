@@ -1,34 +1,27 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Product } from '../../interfaces/product';
-import { selectAddedProducts } from '../../store/cart/cart.selectors';
+import { selectAddedProducts, selectAddedProductsTotal } from '../../store/cart/cart.selectors';
 import { removeFromCart } from '../../store/cart/cart.actions';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
   imports: [
-    CommonModule,
-    CurrencyPipe
+    CurrencyPipe,
+    AsyncPipe
   ],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss'
+  styleUrl: './cart.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CartComponent implements OnInit {
-  store: Store = inject(Store);
-  cartProducts: Product[] = [];
-
-  ngOnInit() {
-    this.store.pipe(select(selectAddedProducts)).subscribe((products) => {
-      this.cartProducts = products;
-    });
-  }
+export class CartComponent {
+  private store: Store = inject(Store);
+  protected cartProducts$: Observable<Product[]> = this.store.select(selectAddedProducts);
+  protected total$: Observable<number> = this.store.select(selectAddedProductsTotal);
 
   removeFromCart(productId: number) {
     this.store.dispatch(removeFromCart({ productId }));
-  }
-
-  getTotal(): number {
-    return this.cartProducts.reduce((total, product) => total + product.price, 0);
   }
 }
