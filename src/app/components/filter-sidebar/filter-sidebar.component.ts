@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgForOf } from '@angular/common';
 import { ProductCategories } from '../../enums/product-categories';
@@ -13,7 +13,8 @@ import { Store } from '@ngrx/store';
     ReactiveFormsModule
   ],
   templateUrl: './filter-sidebar.component.html',
-  styleUrl: './filter-sidebar.component.scss'
+  styleUrl: './filter-sidebar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterSidebarComponent implements OnInit {
   formBuilder: FormBuilder = inject(FormBuilder);

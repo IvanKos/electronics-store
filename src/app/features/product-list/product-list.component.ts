@@ -16,11 +16,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-home',
   imports: [StarRatingComponent, ReactiveFormsModule, FilterSidebarComponent, CurrencyPipe],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit {
+export class ProductListComponent implements OnInit {
   private store: Store = inject(Store);
   private modalService: BsModalService = inject(BsModalService);
 
